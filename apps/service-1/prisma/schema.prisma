@@ -6,3 +6,43 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+model Customer {
+  createdAt DateTime @default(now())
+  firstName String?
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+}
+
+model Room {
+  createdAt    DateTime      @default(now())
+  hotel        Hotel?        @relation(fields: [hotelId], references: [id])
+  hotelId      String?
+  id           String        @id @default(cuid())
+  price        Float?
+  reservations Reservation[]
+  roomNumber   String?
+  typeField    String?
+  updatedAt    DateTime      @updatedAt
+}
+
+model Hotel {
+  address   String?
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  name      String?
+  rating    Float?
+  rooms     Room[]
+  updatedAt DateTime @updatedAt
+}
+
+model Reservation {
+  checkInDate  DateTime?
+  checkOutDate DateTime?
+  createdAt    DateTime  @default(now())
+  id           String    @id @default(cuid())
+  room         Room?     @relation(fields: [roomId], references: [id])
+  roomId       String?
+  totalPrice   Float?
+  updatedAt    DateTime  @updatedAt
+}
